@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deepa Malagond | Project Tracker</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f0f7f3;color:#203b2d;margin:0}
+header{background:#176b4d;color:white;padding:28px;text-align:center}
+main{max-width:800px;margin:25px auto;padding:16px}
+.card{background:white;padding:22px;margin-bottom:20px;border-radius:14px;box-shadow:0 3px 12px #0001}
+input,select,button{padding:12px;margin:5px 0;border:1px solid #ccd8d0;border-radius:7px;font-size:15px}
+input,select{max-width:100%}
+button{background:#176b4d;color:white;cursor:pointer}
+.project{padding:12px;border-bottom:1px solid #ddd}
+.done{text-decoration:line-through;color:gray}
+</style>
+</head>
+<body>
+<header>
+<h1>Deepa's Student Project Tracker</h1>
+<p>Plan • Track • Achieve</p>
+</header>
+<main>
+<section class="card">
+<h2>Student Details</h2>
+<p><b>Name:</b> Deepa Malagond</p>
+<p><b>Branch:</b> ECM-E</p>
+<p><b>USN:</b> R25EP015</p>
+<p><b>Semester:</b> 3rd Semester</p>
+</section>
+<section class="card">
+<h2>Add a Project</h2>
+<form id="form">
+<input id="name" placeholder="Enter project name" required>
+<select id="priority">
+<option>High Priority</option>
+<option>Medium Priority</option>
+<option>Low Priority</option>
+</select>
+<button type="submit">+ Add Project</button>
+</form>
+</section>
+<section class="card">
+<h2>My Projects</h2>
+<div id="list">No projects yet. Add your first project above!</div>
+</section>
+</main>
+<script>
+let projects=[];
+const form=document.getElementById('form');
+const list=document.getElementById('list');
+function render(){
+list.innerHTML='';
+if(!projects.length){list.textContent='No projects yet. Add your first project above!';return;}
+projects.forEach((p,i)=>{
+const item=document.createElement('div');
+item.className='project'+(p.done?' done':'');
+const title=document.createElement('p');
+title.textContent=p.name+' — '+p.priority;
+const complete=document.createElement('button');
+complete.textContent=p.done?'Reopen':'Mark Complete';
+complete.onclick=()=>{projects[i].done=!projects[i].done;render();};
+const remove=document.createElement('button');
+remove.textContent='Delete';
+remove.onclick=()=>{projects.splice(i,1);render();};
+item.append(title,complete,remove);
+list.append(item);
+});
+}
+form.onsubmit=e=>{
+e.preventDefault();
+projects.push({name:document.getElementById('name').value,priority:document.getElementById('priority').value,done:false});
+form.reset();render();
+};
+render();
+</script>
+</body>
+</html>
